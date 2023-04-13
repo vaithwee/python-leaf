@@ -10,11 +10,15 @@ def hello_world():
 def gen_token():
     ak = request.args['ak']
     sk = request.args['sk']
-    key = request.args['key']
     bucket = request.args['bucket']
+    try:
+        key = request.args['key']
+        if key:
+            bucket = bucket+":"+key
+    except:
+        print('error')
+    
     q = qiniu.Auth(access_key=ak, secret_key=sk)
-    if key:
-        bucket = bucket+":"+key
     token = q.upload_token(bucket)
     return token
 
